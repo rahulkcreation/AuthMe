@@ -201,4 +201,33 @@ class AuthMe_OTP {
             array( '%s', '%s', '%d' )
         );
     }
+
+    /* ──────────────────────────────────────── */
+
+    /**
+     * Cleanup old OTPs from the database.
+     *
+     * Deletes:
+     *   1. All verified OTPs (no longer needed).
+     *   2. All expired unverified OTPs older than 1 hour.
+     *
+     * Called automatically via WP-Cron (twice daily).
+     */
+    public function cleanup_expired_otps() {
+        global $wpdb;
+
+        // 1. Delete all verified OTPs (already used, no longer needed)
+        $wpdb->query(
+            "DELETE FROM {$this->table_name} WHERE is_verified = 1"
+        );
+
+        // 2. Delete all expired & unverified OTPs older than 1 hour
+        $one_hour_ago = gmdate( 'Y-m-d H:i:s', time() - HOUR_IN_SECONDS );
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$this->table_name} WHERE is_verified = 0 AND expires_at < %s",
+                $one_hour_ago
+            )
+        );
+    }
 }

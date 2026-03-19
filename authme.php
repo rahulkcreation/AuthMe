@@ -58,6 +58,11 @@ function authme_activate_plugin() {
     // Register rewrite rules and flush so /authme URL works immediately
     authme_register_rewrite_rules();
     flush_rewrite_rules();
+
+    // Schedule OTP cleanup cron (runs twice daily)
+    if ( ! wp_next_scheduled( 'authme_otp_cleanup' ) ) {
+        wp_schedule_event( time(), 'twicedaily', 'authme_otp_cleanup' );
+    }
 }
 
 /* ──────────────────────────────────────────────
@@ -67,6 +72,26 @@ register_deactivation_hook( __FILE__, 'authme_deactivate_plugin' );
 
 function authme_deactivate_plugin() {
     flush_rewrite_rules();
+
+    // Unschedule OTP cleanup cron
+    $timestamp = wp_next_scheduled( 'authme_otp_cleanup' );
+    if ( $timestamp ) {
+        wp_unschedule_event( $timestamp, 'authme_otp_cleanup' );
+    }
+}
+
+/* ──────────────────────────────────────────────
+ * OTP Auto-Cleanup Cron Hook
+ *
+ * Runs twice daily to delete expired/verified OTPs
+ * from the wp_authme_otp_storage table.
+ * Scheduled on activation, unscheduled on deactivation.
+ * ────────────────────────────────────────────── */
+add_action( 'authme_otp_cleanup', 'authme_run_otp_cleanup' );
+
+function authme_run_otp_cleanup() {
+    $otp = new AuthMe_OTP();
+    $otp->cleanup_expired_otps();
 }
 
 /* ──────────────────────────────────────────────
