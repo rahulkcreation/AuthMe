@@ -1,0 +1,88 @@
+/* ============================================
+ * AuthMe — OTP Screen Styles
+ * ============================================
+ *
+ * Scoped to #authme-otp-screen to prevent
+ * style conflicts.
+ *
+ * @package AuthMe
+ * @since   1.0.0
+ * ============================================ */
+
+/* ── OTP Container (6-box layout) ────────── */
+#authme-otp-screen .authme-otp-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+/* ── Individual OTP Box ──────────────────── */
+#authme-otp-screen .authme-otp-box {
+    width: 48px;
+    height: 56px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: var(--authme-font);
+    border: 1.5px solid var(--authme-border);
+    border-radius: 12px;
+    background-color: var(--authme-input-bg);
+    color: var(--authme-text-main);
+    transition: all 0.2s ease;
+    padding: 0;
+    outline: none;
+}
+
+#authme-otp-screen .authme-otp-box:focus {
+    border-color: var(--authme-primary);
+    box-shadow: 0 0 0 4px var(--authme-primary-ring);
+    background-color: #ffffff;
+}
+
+/* Filled box highlight */
+#authme-otp-screen .authme-otp-box.authme-otp-filled {
+    border-color: var(--authme-primary);
+    background-color: #eff6ff;
+}
+
+/* ── Button ──────────────────────────────── */
+#authme-otp-screen .authme-btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--authme-primary);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--authme-radius-md);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--authme-font);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+}
+
+#authme-otp-screen .authme-btn-primary:hover:not(:disabled) {
+    background-color: var(--authme-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+#authme-otp-screen .authme-btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+#authme-otp-screen .authme-btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 480px) {
+    #authme-otp-screen .authme-otp-box {
+        width: 40px;
+        height: 50px;
+        font-size: 20px;
+    }
+}

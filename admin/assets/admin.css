@@ -1,0 +1,269 @@
+/* ============================================
+ * AuthMe Admin Panel Styles
+ * ============================================
+ *
+ * Scoped exclusively to .authme-admin-wrap
+ * to prevent conflicts with WordPress core styles.
+ *
+ * @package AuthMe
+ * @since   1.0.0
+ * ============================================ */
+
+/* ── Layout ──────────────────────────────── */
+.authme-admin-wrap {
+    max-width: 900px;
+    margin: 20px 20px 20px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    color: #1e293b;
+}
+
+/* ── Header ──────────────────────────────── */
+.authme-admin-header {
+    margin-bottom: 32px;
+}
+
+.authme-admin-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+}
+
+.authme-admin-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ── Cards Grid ──────────────────────────── */
+.authme-admin-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.authme-admin-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: box-shadow 0.2s ease;
+}
+
+.authme-admin-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.authme-admin-card-icon {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.authme-admin-card-content h3 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 4px 0;
+}
+
+.authme-admin-card-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+/* ── Sections ────────────────────────────── */
+.authme-admin-section {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.authme-admin-section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 16px 0;
+}
+
+/* ── Info Box ────────────────────────────── */
+.authme-admin-info-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.authme-admin-info-box p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    color: #334155;
+}
+
+.authme-admin-code {
+    display: inline-block;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+/* ── Quick Links Grid ────────────────────── */
+.authme-admin-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.authme-admin-link-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.authme-admin-link-card:hover {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+}
+
+.authme-admin-link-icon {
+    font-size: 20px;
+}
+
+/* ── Buttons ─────────────────────────────── */
+.authme-admin-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 12px;
+}
+
+.authme-admin-btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.authme-admin-btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.authme-admin-btn-secondary {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+}
+
+.authme-admin-btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+.authme-admin-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ── Table Status ────────────────────────── */
+.authme-admin-loading {
+    font-size: 14px;
+    color: #64748b;
+    font-style: italic;
+}
+
+.authme-db-status-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.authme-db-status-table th,
+.authme-db-status-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+}
+
+.authme-db-status-table th {
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+.authme-db-status-table td {
+    color: #1e293b;
+}
+
+.authme-status-ok {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.authme-status-missing {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+/* ── Toast (admin) ───────────────────────── */
+.authme-admin-toast {
+    position: fixed;
+    top: 40px;
+    right: 20px;
+    z-index: 99999;
+    background: #0f172a;
+    color: #ffffff;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    animation: authmeAdminSlideIn 0.3s ease forwards;
+}
+
+.authme-admin-toast.authme-admin-toast-success {
+    border-left: 4px solid #16a34a;
+}
+
+.authme-admin-toast.authme-admin-toast-error {
+    border-left: 4px solid #dc2626;
+}
+
+@keyframes authmeAdminSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
