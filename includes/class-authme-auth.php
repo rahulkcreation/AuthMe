@@ -182,7 +182,6 @@ class AuthMe_Auth {
 
         wp_send_json_success( array(
             'message'  => 'Registration successful! Welcome aboard.',
-            'redirect' => home_url(),
         ) );
     }
 
@@ -210,7 +209,6 @@ class AuthMe_Auth {
 
         wp_send_json_success( array(
             'message'  => 'Login successful! Welcome back.',
-            'redirect' => home_url(),
         ) );
     }
 }
