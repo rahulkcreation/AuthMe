@@ -6,7 +6,6 @@
  * Fields: Email/Username, Password (with eye toggle), Remember Me.
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

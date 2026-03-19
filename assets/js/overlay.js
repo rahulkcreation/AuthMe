@@ -8,7 +8,6 @@
  * entire viewport regardless of DOM placement.
  *
  * @package AuthMe
- * @since   1.1.0
  */
 
 (function (window) {
@@ -226,15 +225,18 @@
     });
 
     // ── WooCommerce: Intercept "Proceed to Checkout" on cart page ──
-    // Prevents non-logged-in users from proceeding to checkout
-    var checkoutBtn = document.querySelector(
-      ".checkout-button, .wc-proceed-to-checkout a, a.checkout-button",
-    );
-    if (checkoutBtn) {
-      checkoutBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        authmeOpenOverlay();
-      });
+    // Only blocks non-logged-in users (overlay backdrop only exists for them)
+    var authmeBackdrop = document.getElementById("authme-overlay-backdrop");
+    if (authmeBackdrop) {
+      var checkoutBtn = document.querySelector(
+        ".checkout-button, .wc-proceed-to-checkout a, a.checkout-button",
+      );
+      if (checkoutBtn) {
+        checkoutBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          authmeOpenOverlay();
+        });
+      }
     }
   });
 

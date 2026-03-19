@@ -7,7 +7,6 @@
  * Every other file references paths from here.
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

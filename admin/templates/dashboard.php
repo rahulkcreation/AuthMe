@@ -5,7 +5,6 @@
  * Displays plugin overview, usage info, and quick links.
  *
  * @package AuthMe
- * @since   1.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -5,7 +5,6 @@
  * used across all AuthMe frontend scripts.
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 /* global authme_ajax */

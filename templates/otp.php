@@ -7,7 +7,6 @@
  * 6 individual digit input boxes with auto-tab.
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -7,7 +7,6 @@
  * Types: 'success', 'error', 'warning', 'info'
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 (function (window) {

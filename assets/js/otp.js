@@ -8,7 +8,6 @@
  *   - Verify & Proceed → finalizes registration or login
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 /* global authmeAjax, authmeToast, authmeCloseOverlay */

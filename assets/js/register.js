@@ -9,7 +9,6 @@
  *   5. "Send OTP" → stores user data, sends OTP, switches to OTP screen
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 /* global authmeAjax, authmeIsValidEmail, authmeSetFieldState, authmeValidatePassword, authmePasswordStrength, authmeToast, authmeShowScreen */

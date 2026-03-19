@@ -6,7 +6,6 @@
  * dynamically injected by toaster.js.
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

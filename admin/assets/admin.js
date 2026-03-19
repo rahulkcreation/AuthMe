@@ -5,7 +5,6 @@
  * via AJAX on the admin Database Management page.
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 (function () {

@@ -6,7 +6,6 @@
  * and provides AJAX handlers for database management.
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

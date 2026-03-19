@@ -6,7 +6,6 @@
  * wp_authme_otp_storage custom database table.
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

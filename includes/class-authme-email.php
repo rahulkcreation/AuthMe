@@ -5,7 +5,6 @@
  * Sends beautifully designed OTP emails using WordPress wp_mail().
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

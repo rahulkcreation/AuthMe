@@ -10,7 +10,6 @@
  *   $authme_otp_purpose — 'registration' or 'login'
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

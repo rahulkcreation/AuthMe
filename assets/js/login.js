@@ -7,7 +7,6 @@
  *   3. "Send OTP" → validates creds, sends OTP, switches to OTP screen
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 /* global authmeAjax, authmeIsValidEmail, authmeSetFieldState, authmeToast, authmeShowScreen */

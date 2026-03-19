@@ -7,7 +7,6 @@
  * Uses position:fixed + z-index:1000 for modal popup.
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

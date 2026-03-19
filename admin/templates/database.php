@@ -3,7 +3,6 @@
  * AuthMe Admin — Database Management Page
  *
  * @package AuthMe
- * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
