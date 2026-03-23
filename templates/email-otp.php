@@ -16,7 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$purpose_label = ( $authme_otp_purpose === 'login' ) ? 'Login Verification' : 'Registration Verification';
+if ( $authme_otp_purpose === 'login' ) {
+    $purpose_label = 'Login Verification';
+} elseif ( $authme_otp_purpose === 'password_reset' ) {
+    $purpose_label = 'Reset Password Verification';
+} else {
+    $purpose_label = 'Registration Verification';
+}
 $site_name     = get_bloginfo( 'name' );
 ?>
 <!DOCTYPE html>

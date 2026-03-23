@@ -23,9 +23,13 @@ class AuthMe_Email {
      */
     public function send_otp_email( $to_email, $otp_code, $purpose = 'registration' ) {
 
-        $subject = ( $purpose === 'login' )
-            ? 'Your Login Verification Code — AuthMe'
-            : 'Your Registration Verification Code — AuthMe';
+        if ( $purpose === 'login' ) {
+            $subject = 'Your Login Verification Code — AuthMe';
+        } elseif ( $purpose === 'password_reset' ) {
+            $subject = 'Your Reset Password Verification Code — AuthMe';
+        } else {
+            $subject = 'Your Registration Verification Code — AuthMe';
+        }
 
         // Build the HTML email body from the template
         $body = $this->get_email_template( $otp_code, $purpose );
@@ -55,4 +59,39 @@ class AuthMe_Email {
         include AUTHME_PLUGIN_DIR . 'templates/email-otp.php';
         return ob_get_clean();
     }
+    /* ──────────────────────────────────────── */
+
+    /**
+     * Send a "password changed" notification email.
+     *
+     * @param string $to_email    Recipient email address.
+     * @param string $user_name   User's display name.
+     * @return bool               True if mail was sent successfully.
+     */
+    public function send_password_changed_email( $to_email, $user_name ) {
+
+        $subject = 'Your Password Was Changed — ' . get_bloginfo( 'name' );
+
+        $body = $this->get_password_changed_template( $user_name );
+
+        $headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+        return wp_mail( $to_email, $subject, $body, $headers );
+    }
+
+    /* ──────────────────────────────────────── */
+
+    /**
+     * Get the HTML template for the password-changed email.
+     *
+     * @param string $user_name  User's display name.
+     * @return string            HTML email body.
+     */
+    private function get_password_changed_template( $user_name ) {
+        ob_start();
+        $authme_user_name = $user_name;
+        include AUTHME_PLUGIN_DIR . 'templates/email-password-changed.php';
+        return ob_get_clean();
+    }
 }
+

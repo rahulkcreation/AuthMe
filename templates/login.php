@@ -44,14 +44,18 @@ if ( ! defined( 'ABSPATH' ) ) {
             <span id="authme-login-password-msg" class="authme-field-msg"></span>
         </div>
 
-        <!-- Remember Me -->
-        <div class="authme-remember-me">
-            <input type="checkbox" id="authme-login-remember">
-            <label for="authme-login-remember">Remember me</label>
+        <!-- Remember Me + Forgot Password (inline row) -->
+        <div class="authme-login-bottom-row">
+            <div class="authme-remember-me">
+                <input type="checkbox" id="authme-login-remember">
+                <label for="authme-login-remember">Remember me</label>
+            </div>
+            <span class="authme-link authme-forgot-link" data-screen="authme-forgot-screen">Forgot Password?</span>
         </div>
 
+
         <!-- Submit Button -->
-        <button type="submit" id="authme-login-submit-btn" class="authme-btn authme-btn-primary" disabled>Send OTP</button>
+        <button type="submit" id="authme-login-submit-btn" class="authme-btn authme-btn-primary" disabled>Login</button>
 
     </form>
 

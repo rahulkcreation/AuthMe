@@ -34,9 +34,16 @@ if ( ! defined( 'ABSPATH' ) ) {
         <!-- Register Screen -->
         <?php include AUTHME_PLUGIN_DIR . 'templates/register.php'; ?>
 
-        <!-- OTP Verification Screen -->
+        <!-- OTP Verification Screen (shared for login, registration, password reset) -->
         <?php include AUTHME_PLUGIN_DIR . 'templates/otp.php'; ?>
+
+        <!-- Forgot Password Screen -->
+        <?php include AUTHME_PLUGIN_DIR . 'templates/forgot-password.php'; ?>
+
+        <!-- New Password Screen (shown after OTP verified on reset flow) -->
+        <?php include AUTHME_PLUGIN_DIR . 'templates/new-password.php'; ?>
 
     </div>
 
 </div>
+

@@ -55,6 +55,14 @@ class AuthMe_Assets_Loader {
                 'dir' => $base_dir . 'assets/css/register.css',
                 'url' => $base_url . 'assets/css/register.css',
             ),
+            'css_forgot_password' => array(
+                'dir' => $base_dir . 'assets/css/forgot-password.css',
+                'url' => $base_url . 'assets/css/forgot-password.css',
+            ),
+            'css_new_password'    => array(
+                'dir' => $base_dir . 'assets/css/new-password.css',
+                'url' => $base_url . 'assets/css/new-password.css',
+            ),
             'css_otp'       => array(
                 'dir' => $base_dir . 'assets/css/otp.css',
                 'url' => $base_url . 'assets/css/otp.css',
@@ -85,6 +93,14 @@ class AuthMe_Assets_Loader {
                 'dir' => $base_dir . 'assets/js/register.js',
                 'url' => $base_url . 'assets/js/register.js',
             ),
+            'js_forgot_password' => array(
+                'dir' => $base_dir . 'assets/js/forgot-password.js',
+                'url' => $base_url . 'assets/js/forgot-password.js',
+            ),
+            'js_new_password'    => array(
+                'dir' => $base_dir . 'assets/js/new-password.js',
+                'url' => $base_url . 'assets/js/new-password.js',
+            ),
             'js_otp'        => array(
                 'dir' => $base_dir . 'assets/js/otp.js',
                 'url' => $base_url . 'assets/js/otp.js',
@@ -105,6 +121,15 @@ class AuthMe_Assets_Loader {
             ),
             'tpl_toaster'   => array(
                 'dir' => $base_dir . 'templates/toaster.php',
+            ),
+            'tpl_forgot_password' => array(
+                'dir' => $base_dir . 'templates/forgot-password.php',
+            ),
+            'tpl_new_password'    => array(
+                'dir' => $base_dir . 'templates/new-password.php',
+            ),
+            'tpl_email_password_changed' => array(
+                'dir' => $base_dir . 'templates/email-password-changed.php',
             ),
             'tpl_email_otp' => array(
                 'dir' => $base_dir . 'templates/email-otp.php',
@@ -193,7 +218,7 @@ class AuthMe_Assets_Loader {
     public static function enqueue_frontend() {
 
         /* ── CSS Files ───────────────────── */
-        $css_files = array( 'global', 'overlay', 'login', 'register', 'otp', 'toaster' );
+        $css_files = array( 'global', 'overlay', 'login', 'register', 'otp', 'toaster', 'forgot_password', 'new_password' );
 
         foreach ( $css_files as $name ) {
             $key = 'css_' . $name;
@@ -217,7 +242,9 @@ class AuthMe_Assets_Loader {
             'overlay'  => array( 'authme-global' ),
             'login'    => array( 'authme-global', 'authme-toaster', 'authme-overlay' ),
             'register' => array( 'authme-global', 'authme-toaster', 'authme-overlay' ),
-            'otp'      => array( 'authme-global', 'authme-toaster', 'authme-overlay' ),
+            'otp'             => array( 'authme-global', 'authme-toaster', 'authme-overlay' ),
+            'forgot_password' => array( 'authme-global', 'authme-toaster', 'authme-overlay' ),
+            'new_password'    => array( 'authme-global', 'authme-toaster', 'authme-overlay' ),
         );
 
         foreach ( $js_files as $name => $deps ) {

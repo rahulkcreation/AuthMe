@@ -4,7 +4,7 @@
  * Plugin Name: AuthMe
  * Plugin URI: https://arttechfuzion.com
  * Description: A comprehensive WordPress authentication plugin with OTP verification for secure registration and login.
- * Version: 1.4.0
+ * Version: 1.5.0
  * Author: Art-Tech Fuzion
  * Author URI: https://arttechfuzion.com
  * Text Domain: authme
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
 /* ──────────────────────────────────────────────
  * Constants
  * ────────────────────────────────────────────── */
-define('AUTHME_VERSION', '1.3.0');
+define('AUTHME_VERSION', '1.5.0');
 define('AUTHME_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('AUTHME_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('AUTHME_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -149,6 +149,8 @@ $ajax_actions = array(
     'authme_login_user'        => array($authme_auth, 'ajax_login_user'),
     'authme_register_user'     => array($authme_auth, 'ajax_register_user'),
     'authme_complete_login'    => array($authme_auth, 'ajax_complete_login'),
+    'authme_forgot_check_user' => array($authme_auth, 'ajax_forgot_check_user'),
+    'authme_reset_password'    => array($authme_auth, 'ajax_reset_password'),
     'authme_send_otp'          => array($authme_otp, 'ajax_send_otp'),
     'authme_verify_otp'        => array($authme_otp, 'ajax_verify_otp'),
 );

@@ -162,3 +162,31 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* ── Remember Me + Forgot Password Row ──── */
+#authme-login-screen .authme-login-bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+#authme-login-screen .authme-login-bottom-row .authme-remember-me {
+    margin-bottom: 0;
+}
+
+#authme-login-screen .authme-forgot-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--authme-primary);
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+
+#authme-login-screen .authme-forgot-link:hover {
+    color: var(--authme-primary-hover);
+    text-decoration: underline;
+}
+

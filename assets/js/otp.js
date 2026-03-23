@@ -162,6 +162,15 @@
                 }, 1000);
               },
             );
+          } else if (purpose === "password_reset") {
+            // Step 2c: OTP verified for password reset — go to new-password screen
+            // Pass the verified email to the new-password form
+            var newPassEmailInput = document.getElementById("authme-new-password-email");
+            if (newPassEmailInput) {
+              newPassEmailInput.value = email;
+            }
+            // Navigate to the new-password screen
+            authmeShowScreen("authme-new-password-screen");
           }
         },
         function (data) {
@@ -218,6 +227,14 @@
   function authmeStartOtpTimer() {
     timeLeft = OTP_DURATION;
     var resendBtn = document.getElementById("authme-resend-btn");
+    var submitBtn = document.getElementById("authme-otp-submit-btn");
+
+    // Reset submit button state when timer starts
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Verify & Proceed";
+    }
+
     if (!resendBtn) return;
 
     // Set initial state

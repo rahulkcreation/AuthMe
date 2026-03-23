@@ -2,14 +2,15 @@
  * AuthMe — Login Form JavaScript
  *
  * Handles the login flow:
- *   1. User enters email/username → real-time lookup
- *   2. User enters password → credential validation
- *   3. "Send OTP" → validates creds, sends OTP, switches to OTP screen
+ *   1. User enters email/username → real-time account lookup
+ *   2. User enters password
+ *   3. "Login" → validates credentials server-side → logs in directly
+ *      (No OTP step for login — OTP is only for Registration & Forgot Password)
  *
  * @package AuthMe
  */
 
-/* global authmeAjax, authmeIsValidEmail, authmeSetFieldState, authmeToast, authmeShowScreen */
+/* global authmeAjax, authmeSetFieldState, authmeToast */
 
 (function () {
     'use strict';
@@ -18,8 +19,6 @@
     var loginState = {
         identifierValid: false,
         passwordValid: false,
-        userEmail: '',
-        userId: '',
     };
 
     /* ── Debounce Utility ────────────────── */
@@ -42,8 +41,6 @@
         identifierInput.addEventListener('input', function () {
             var value = this.value.trim();
             loginState.identifierValid = false;
-            loginState.userEmail = '';
-            loginState.userId = '';
             updateSubmitButton();
 
             if (!value) {
@@ -51,13 +48,12 @@
                 return;
             }
 
-            // Debounce the AJAX call
+            // Debounce the AJAX call by 500ms
             clearTimeout(identifierDebounce);
             identifierDebounce = setTimeout(function () {
                 authmeAjax('authme_check_user_exists', { identifier: value },
                     function (data) {
                         loginState.identifierValid = true;
-                        loginState.userEmail = data.email || '';
                         authmeSetFieldState(identifierInput, identifierMsg, 'success', data.message);
                         updateSubmitButton();
                     },
@@ -72,8 +68,7 @@
 
         /* ── Password Validation ─────────────── */
         passwordInput.addEventListener('input', function () {
-            var value = this.value;
-            loginState.passwordValid = value.length > 0;
+            loginState.passwordValid = this.value.length > 0;
             authmeSetFieldState(passwordInput, passwordMsg, '', '');
             updateSubmitButton();
         });
@@ -83,7 +78,7 @@
             submitBtn.disabled = !(loginState.identifierValid && loginState.passwordValid);
         }
 
-        /* ── Form Submission (Send OTP) ──────── */
+        /* ── Form Submission (Direct Login) ──────── */
         form.addEventListener('submit', function (e) {
             e.preventDefault();
 
@@ -93,57 +88,29 @@
             var password   = passwordInput.value;
             var remember   = document.getElementById('authme-login-remember').checked;
 
-            // Disable button & show loading
+            // Disable button & show loading state
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Verifying…';
+            submitBtn.textContent = 'Logging in…';
 
-            // Step 1: Validate credentials via AJAX
+            // Validate credentials AND set auth cookie in one AJAX call
             authmeAjax('authme_login_user', {
-                identifier: identifier,
-                password: password,
-                remember: remember ? 'true' : 'false',
+                identifier:  identifier,
+                password:    password,
+                remember:    remember ? 'true' : 'false',
+                direct_login: 'true',  // Tells backend to set the auth cookie immediately
             },
             function (data) {
-                // Credentials valid → send OTP
-                authmeToast('success', data.message);
-
-                // Store login context for OTP screen
-                document.getElementById('authme-otp-email').value      = data.email;
-                document.getElementById('authme-otp-purpose').value    = 'login';
-                document.getElementById('authme-otp-user-data').value  = '';
-                document.getElementById('authme-otp-user-id').value    = data.user_id;
-                document.getElementById('authme-otp-remember').value   = data.remember ? 'true' : 'false';
-
-                // Step 2: Send OTP to user's email
-                authmeAjax('authme_send_otp', {
-                    email: data.email,
-                    purpose: 'login',
-                },
-                function (otpData) {
-                    authmeToast('success', otpData.message);
-                    // Switch to OTP screen
-                    authmeShowScreen('authme-otp-screen');
-                    // Start the OTP timer (handled by otp.js)
-                    if (typeof window.authmeStartOtpTimer === 'function') {
-                        window.authmeStartOtpTimer();
-                    }
-                    // Focus the first OTP box
-                    var firstBox = document.querySelector('#authme-otp-screen .authme-otp-box');
-                    if (firstBox) firstBox.focus();
-                },
-                function (otpData) {
-                    authmeToast('error', otpData.message);
-                });
-
-                // Reset button
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Send OTP';
+                authmeToast('success', data.message || 'Login successful!');
+                // Reload page after short delay — user is now logged in
+                setTimeout(function () {
+                    window.location.reload();
+                }, 900);
             },
             function (data) {
                 authmeToast('error', data.message);
                 authmeSetFieldState(passwordInput, passwordMsg, 'error', data.message);
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Send OTP';
+                submitBtn.textContent = 'Login';
             });
         });
 

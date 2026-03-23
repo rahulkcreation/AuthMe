@@ -93,20 +93,24 @@ class AuthMe_Auth {
     }
 
     /* ──────────────────────────────────────────────────
-     * AJAX: Validate login credentials (before OTP)
+     * AJAX: Login user
+     *
+     * Validates credentials. If direct_login=true (login form),
+     * sets auth cookie immediately and returns success.
      * ────────────────────────────────────────────────── */
     public function ajax_login_user() {
         check_ajax_referer( 'authme_nonce', 'nonce' );
 
-        $identifier = isset( $_POST['identifier'] ) ? sanitize_text_field( $_POST['identifier'] ) : '';
-        $password   = isset( $_POST['password'] ) ? $_POST['password'] : '';
-        $remember   = isset( $_POST['remember'] ) && $_POST['remember'] === 'true';
+        $identifier   = isset( $_POST['identifier'] ) ? sanitize_text_field( $_POST['identifier'] ) : '';
+        $password     = isset( $_POST['password'] )   ? $_POST['password'] : '';
+        $remember     = isset( $_POST['remember'] ) && $_POST['remember'] === 'true';
+        $direct_login = isset( $_POST['direct_login'] ) && $_POST['direct_login'] === 'true';
 
         if ( empty( $identifier ) || empty( $password ) ) {
             wp_send_json_error( array( 'message' => 'All fields are required.' ) );
         }
 
-        // Determine user
+        // Determine user by email or username
         if ( strpos( $identifier, '@' ) !== false ) {
             $user = get_user_by( 'email', sanitize_email( $identifier ) );
         } else {
@@ -114,7 +118,7 @@ class AuthMe_Auth {
         }
 
         if ( ! $user ) {
-            wp_send_json_error( array( 'message' => 'User not found. Please check your credentials.' ) );
+            wp_send_json_error( array( 'message' => 'No account found. Please check your credentials.' ) );
         }
 
         // Verify password
@@ -122,7 +126,18 @@ class AuthMe_Auth {
             wp_send_json_error( array( 'message' => 'Incorrect password. Please try again.' ) );
         }
 
-        // Credentials valid — frontend will now trigger OTP send
+        if ( $direct_login ) {
+            // Direct login mode — set auth cookie immediately, no OTP step
+            wp_set_current_user( $user->ID );
+            wp_set_auth_cookie( $user->ID, $remember );
+            do_action( 'wp_login', $user->user_login, $user );
+
+            wp_send_json_success( array(
+                'message' => 'Login successful! Welcome back, ' . esc_html( $user->display_name ) . '.',
+            ) );
+        }
+
+        // Fallback: credentials valid — frontend will now trigger OTP send (legacy path)
         wp_send_json_success( array(
             'message'  => 'Credentials verified. Sending OTP…',
             'email'    => $user->user_email,
@@ -185,29 +200,76 @@ class AuthMe_Auth {
     }
 
     /* ──────────────────────────────────────────────────
-     * AJAX: Complete login (called after OTP verification)
+     * AJAX: Check if user exists (Forgot Password — lookup)
+     *
+     * Accepts email or username. Returns the email address
+     * so we can send an OTP to it.
      * ────────────────────────────────────────────────── */
-    public function ajax_complete_login() {
+    public function ajax_forgot_check_user() {
         check_ajax_referer( 'authme_nonce', 'nonce' );
 
-        $user_id  = isset( $_POST['user_id'] ) ? intval( $_POST['user_id'] ) : 0;
-        $remember = isset( $_POST['remember'] ) && $_POST['remember'] === 'true';
+        $identifier = isset( $_POST['identifier'] ) ? sanitize_text_field( $_POST['identifier'] ) : '';
 
-        if ( ! $user_id ) {
-            wp_send_json_error( array( 'message' => 'Invalid user ID.' ) );
+        if ( empty( $identifier ) ) {
+            wp_send_json_error( array( 'message' => 'Please enter your email or username.' ) );
         }
 
-        $user = get_user_by( 'ID', $user_id );
+        // Auto-detect: if it contains '@', treat as email; otherwise as username
+        if ( strpos( $identifier, '@' ) !== false ) {
+            $user = get_user_by( 'email', sanitize_email( $identifier ) );
+        } else {
+            $user = get_user_by( 'login', $identifier );
+        }
+
+        if ( ! $user ) {
+            wp_send_json_error( array(
+                'message' => 'No account found with this detail. Please create one.',
+            ) );
+        }
+
+        wp_send_json_success( array(
+            'email'   => $user->user_email,
+            'user_id' => $user->ID,
+        ) );
+    }
+
+    /* ──────────────────────────────────────────────────
+     * AJAX: Reset password (called after OTP verification)
+     *
+     * Receives the user email and new password.
+     * Updates the password in the database and sends
+     * a "password changed" email notification.
+     * ────────────────────────────────────────────────── */
+    public function ajax_reset_password() {
+        check_ajax_referer( 'authme_nonce', 'nonce' );
+
+        $email        = isset( $_POST['email'] )        ? sanitize_email( $_POST['email'] )       : '';
+        $new_password = isset( $_POST['new_password'] ) ? wp_unslash( $_POST['new_password'] )    : '';
+
+        if ( empty( $email ) || empty( $new_password ) ) {
+            wp_send_json_error( array( 'message' => 'All fields are required.' ) );
+        }
+
+        // Password strength: minimum 8 chars
+        if ( strlen( $new_password ) < 8 ) {
+            wp_send_json_error( array( 'message' => 'Password must be at least 8 characters.' ) );
+        }
+
+        $user = get_user_by( 'email', $email );
         if ( ! $user ) {
             wp_send_json_error( array( 'message' => 'User not found.' ) );
         }
 
-        // Set the auth cookie and log the user in
-        wp_set_current_user( $user_id );
-        wp_set_auth_cookie( $user_id, $remember );
+        // Update the password
+        wp_set_password( $new_password, $user->ID );
+
+        // Send "password changed" email notification
+        $email_handler = new AuthMe_Email();
+        $email_handler->send_password_changed_email( $email, $user->display_name );
 
         wp_send_json_success( array(
-            'message'  => 'Login successful! Welcome back.',
+            'message' => 'Password reset successfully! You can now log in.',
         ) );
     }
 }
+
