@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpecsDeal - Auth UI</title>
+    <style>
+        /* CSS Reset & Basics */
+        :root {
+            --primary-color: #2563eb; /* Trustworthy E-commerce Blue */
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc; /* Very light slate for contrast */
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #ffffff;
+            --input-focus-ring: rgba(37, 99, 235, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Minimalist Main Wrapper */
+        .auth-wrapper {
+            width: 100%;
+            max-width: 420px;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+       
+
+        /* Screen Switching Logic */
+        .screen {
+            display: none;
+            animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .input-group input:not([type="checkbox"]) {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            background-color: var(--input-bg);
+        }
+
+        .input-group input:not([type="checkbox"]):focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--input-focus-ring);
+        }
+
+        .input-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Password Wrapper for Eye Toggle */
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-wrapper input {
+            padding-right: 40px; /* Make space for eye icon */
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary-color);
+        }
+
+        .toggle-password svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Remember Me Checkbox */
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-color); /* Uses the theme blue color */
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .remember-me label {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            cursor: pointer;
+            user-select: none; /* Prevents text selection on double click */
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1.5px solid var(--border-color);
+            margin-top: 12px;
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bg-color);
+            border-color: #cbd5e1;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Links */
+        .switch-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .switch-link span {
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 4px;
+            transition: color 0.2s;
+        }
+
+        .switch-link span:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .auth-wrapper {
+                padding: 30px 20px;
+                border-radius: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-wrapper">
+        
+       
+
+       
+        <div id="login-screen" class="screen active">
+            <h2>Reset Password</h2>
+            <p class="subtitle">Enter your details to reset your password.</p>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="login-email">Email / Username</label>
+                    <input type="email" id="login-email" placeholder="name@example.com" required>
+                </div>
+               
+
+
+                <button type="submit" class="btn">Send OTP</button>
+            </form>
+            
+            <p class="switch-link">New to SpecsDeal? <span onclick="switchScreen('register-screen')">Create an account</span></p>
+        </div>
+
+
+
+       
+
+    </div>
+
+   
+</body>
+</html>
